@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-note-card',
@@ -10,6 +10,11 @@ export class NoteCardComponent implements OnInit {
   //Don't need to do @Input since it matches data coming in
   @Input() title: string;
   @Input() body: string;
+  @Input() link: string;
+
+  // void because we're not returning data
+  //parent component uses 'delete' to bind to the event
+  @Output('delete') deleteEvent: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('truncator', {static: false}) truncator: ElementRef<HTMLElement>;
   @ViewChild('bodyText', {static: false}) bodyText: ElementRef<HTMLElement>;
@@ -35,4 +40,8 @@ export class NoteCardComponent implements OnInit {
     }
   }
 
+  // Inform parent to delete this button on click!
+  onXButtonClick(){
+    this.deleteEvent.emit();
+  }
 }
